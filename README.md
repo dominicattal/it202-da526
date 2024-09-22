@@ -1,3 +1,5 @@
-# it202-da526
+IT202-101
 
-first commit
+Dominic
+
+I am a junior computer science major
