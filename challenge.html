@@ -9,9 +9,8 @@
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here (hint: you'll likely want to start here for the JS challenge)
             document.querySelectorAll('nav a').forEach(item => {
-              // Get the text content and capitalize the first letter
               const text = item.textContent;
-              item.textContent = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(); // Capitalize first letter and lowercase rest
+              item.textContent = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
             });
             document.querySelectorAll('nav a').forEach(item => {
               item.addEventListener("click", function() {
