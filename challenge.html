@@ -9,10 +9,6 @@
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here (hint: you'll likely want to start here for the JS challenge)
             document.querySelectorAll('nav a').forEach(item => {
-              const text = item.textContent;
-              item.textContent = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-            });
-            document.querySelectorAll('nav a').forEach(item => {
               item.addEventListener("click", function() {
                 getCurrentSelection();
               })
@@ -34,21 +30,28 @@
     </script>
     <style>
         /* TODO: make style edits here */
+        body {
+          background-color: beige;
+        }
         nav ul {
           background-color: yellow;
           list-style-type: none;
-          display: flex;
         }
         nav li {
-          margin-right: 2em;
+          background-color: aliceblue;
+          display: inline-block;
+          padding: 5px;
         }
         nav a:hover {
           color: green;
         }
-        nav li::before {
+        nav a {
+          text-decoration: none;
+        }
+        li::marker {
           content: "✔"; 
         }
-        h1::first-letter, a::first-letter {
+        h1, a {
           text-transform: capitalize;
         }
     </style>
