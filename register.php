@@ -4,11 +4,11 @@ require(__DIR__ . "/partials/nav.php");
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
-        <input type="email" name="email" required />
+        <input type="email" name="email" value="<?php echo isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : ''; ?>" required />
     </div>
     <div>
         <label for="user">Username</label>
-        <input type="text" name="user" required />
+        <input type="text" name="user" value="<?php echo isset($_POST["user"]) ? htmlspecialchars($_POST["user"]) : ''; ?>" required />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -75,18 +75,54 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         echo "Passwords must match";
         $hasError = true;
     }
+
     if (!$hasError) {
-        echo "Welcome, $email";
         //TODO 4
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO Users (email, password, username) VALUES (:email, :password, :username)");
-        try {
-            $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
-            echo "Successfully registered!";
-        } catch (Exception $e) {
-            echo "There was a problem registering";
-            echo "<pre>" . var_export($e, true) . "</pre>";
+
+        function unique_email($db, $email) {
+            try {
+                $unique_stmt = $db->prepare("SELECT * FROM Users WHERE email=:email");
+                $unique_stmt->execute([":email" => $email]);
+                $result = $unique_stmt->fetch(PDO::FETCH_ASSOC) == false;
+                if (!$result) {
+                    echo "Email is not unique";
+                    return false;
+                }
+                return true;
+            } catch (Exception $e) {
+                echo "There was a problem verifying uniqueness of email";
+                return false;
+            }
+        }
+
+        function unique_username($db, $username) {
+            try {
+                $unique_stmt = $db->prepare("SELECT * FROM Users WHERE username=:username");
+                $unique_stmt->execute([":username" => $username]);
+                $result = $unique_stmt->fetch(PDO::FETCH_ASSOC) == false;
+                if (!$result) {
+                    echo "Username is not unique";
+                    return false;
+                }
+                return true;
+            } catch (Exception $e) {
+                echo "There was a problem verifying uniqueness of username";
+                return false;
+            }
+        }
+
+        if (unique_email($db, $email) && unique_username($db, $username)) {
+            $stmt = $db->prepare("INSERT INTO Users (email, password, username) VALUES (:email, :password, :username)");
+            try {
+                $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
+                echo "Welcome, $email";
+                echo "Successfully registered!";
+            } catch (Exception $e) {
+                echo "There was a problem registering";
+                echo "<pre>" . var_export($e, true) . "</pre>";
+            }
         }
     }
 }

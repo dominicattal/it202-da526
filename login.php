@@ -3,8 +3,8 @@ require(__DIR__ . "/partials/nav.php");
 ?>
 <form onsubmit="return validate(this)" method="POST">
     <div>
-        <label for="email">Username or Email</label>
-        <input type="email" name="email" required />
+        <label for="credentials">Username or Email</label>
+        <input type="text" name="credentials" required />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -12,6 +12,12 @@ require(__DIR__ . "/partials/nav.php");
     </div>
     <input type="submit" value="Login" />
 </form>
+<?php
+    if (isset($_SESSION["logout"])) {
+        echo "Successfully logged out";
+        unset($_SESSION["logout"]);
+    }
+?>
 <script>
     function validate(form) {
         //TODO 1: implement JavaScript validation
@@ -22,23 +28,19 @@ require(__DIR__ . "/partials/nav.php");
 </script>
 <?php
 //TODO 2: add PHP Code
-if (isset($_POST["email"]) && isset($_POST["password"])) {
-    $email = se($_POST, "email", "", false);
+if (isset($_POST["credentials"]) && isset($_POST["password"])) {
+    $credentials = se($_POST, "credentials", "", false);
     $password = se($_POST, "password", "", false);
 
     //TODO 3
     $hasError = false;
-    if (empty($email)) {
+    if (empty($credentials)) {
         echo "Email must not be empty";
         $hasError = true;
     }
     //sanitize
-    $email = sanitize_email($email);
-    //validate
-    if (!is_valid_email($email)) {
-        echo "Invalid email address";
-        $hasError = true;
-    }
+    $credentials = trim($credentials);
+
     if (empty($password)) {
         echo "password must not be empty";
         $hasError = true;
@@ -47,12 +49,13 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         echo "Password too short";
         $hasError = true;
     }
+
     if (!$hasError) {
         //TODO 4
         $db = getDB();
-        $stmt = $db->prepare("SELECT email, password, username, id from Users where email = :email OR username = :email");
+        $stmt = $db->prepare("SELECT email, password, username, id from Users where email = :credentials OR username = :credentials");
         try {
-            $r = $stmt->execute([":email" => $email]);
+            $r = $stmt->execute([":credentials" => $credentials]);
             if ($r) {
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($user) {
@@ -84,7 +87,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         echo "Invalid password";
                     }
                 } else {
-                    echo "Email not found";
+                    echo "Account not found";
                 }
             }
         } catch (Exception $e) {
