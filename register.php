@@ -117,8 +117,8 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
             $stmt = $db->prepare("INSERT INTO Users (email, password, username) VALUES (:email, :password, :username)");
             try {
                 $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
-                echo "Welcome, $email";
-                echo "Successfully registered!";
+                echo "<p>Successfully registered!</p>";
+                echo "<p>Welcome, $email</p>";
             } catch (Exception $e) {
                 echo "There was a problem registering";
                 echo "<pre>" . var_export($e, true) . "</pre>";

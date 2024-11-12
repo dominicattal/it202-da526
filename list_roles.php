@@ -4,6 +4,7 @@ require(__DIR__ . "./partials/nav.php");
 
 if (!has_role("Admin")) {
     echo "You dont have permission to view this page";
+    $_SESSION["access"] = true;
     die(header("Location: home.php"));
 }
 //handle the toggle first so select pulls fresh data

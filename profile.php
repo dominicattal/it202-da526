@@ -14,9 +14,9 @@ if (isset($_POST["save"])) {
     $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
     try {
         $stmt->execute($params);
-        echo "Profile saved";
+        echo "<p>Profile saved</p>";
     } catch (Exception $e) {
-        echo "Username or email already exists";
+        echo "<p>Username or email already exists</p>";
     }
     //select fresh data from table
     $stmt = $db->prepare("SELECT id, email, username from Users where id = :id LIMIT 1");
@@ -28,7 +28,7 @@ if (isset($_POST["save"])) {
             $_SESSION["user"]["email"] = $user["email"];
             $_SESSION["user"]["username"] = $user["username"];
         } else {
-            echo "User doesn't exist";
+            echo "<p>User doesn't exist</p>";
         }
     } catch (Exception $e) {
         echo "An unexpected error occurred, please try again";
@@ -56,9 +56,9 @@ if (isset($_POST["save"])) {
                             ":password" => password_hash($new_password, PASSWORD_BCRYPT)
                         ]);
 
-                        echo "Password reset";
+                        echo "<p>Password reset</p>";
                     } else {
-                        echo "Current password is invalid";
+                        echo "<p>Current password is invalid</p>";
                     }
                 }
             } catch (Exception $e) {
@@ -66,7 +66,7 @@ if (isset($_POST["save"])) {
                 echo "<pre>" . var_export($e, true) . "</pre>";
             }
         } else {
-            echo "New passwords don't match";
+            echo "<p>New passwords don't match</p>";
         }
     }
 }
