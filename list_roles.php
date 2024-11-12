@@ -3,8 +3,8 @@
 require(__DIR__ . "./partials/nav.php");
 
 if (!has_role("Admin")) {
-    flash("You don't have permission to view this page", "warning");
-    die(header("Location: " . get_url("home.php")));
+    echo "You dont have permission to view this page";
+    die(header("Location: home.php"));
 }
 //handle the toggle first so select pulls fresh data
 if (isset($_POST["role_id"])) {
@@ -14,9 +14,9 @@ if (isset($_POST["role_id"])) {
         $stmt = $db->prepare("UPDATE Roles SET is_active = !is_active WHERE id = :rid");
         try {
             $stmt->execute([":rid" => $role_id]);
-            flash("Updated Role", "success");
+            echo "Updated Role";
         } catch (PDOException $e) {
-            flash(var_export($e->errorInfo, true), "danger");
+            echo var_export($e->errorInfo, true);
         }
     }
 }
@@ -37,10 +37,10 @@ try {
     if ($results) {
         $roles = $results;
     } else {
-        flash("No matches found", "warning");
+        echo "No matches found";
     }
 } catch (PDOException $e) {
-    flash(var_export($e->errorInfo, true), "danger");
+    echo var_export($e->errorInfo, true), "danger";
 }
 
 ?>

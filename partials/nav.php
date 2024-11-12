@@ -22,9 +22,9 @@ if (($localWorks && $domain == "localhost") || $domain != "localhost") {
 
 session_start();
 require_once(__DIR__ . "/../lib/functions.php");
-
+require_once(__DIR__ . "./../lib/head.html");
 ?>
-<nav>
+<nav class="navbar">
     <ul>
         <?php if (is_logged_in()) : ?>
             <li><a href="home.php">Home</a></li>

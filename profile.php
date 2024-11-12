@@ -14,8 +14,9 @@ if (isset($_POST["save"])) {
     $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
     try {
         $stmt->execute($params);
-        #flash("Profile saved", "success");
+        echo "Profile saved";
     } catch (Exception $e) {
+        echo "Username or email already exists";
     }
     //select fresh data from table
     $stmt = $db->prepare("SELECT id, email, username from Users where id = :id LIMIT 1");
@@ -27,11 +28,11 @@ if (isset($_POST["save"])) {
             $_SESSION["user"]["email"] = $user["email"];
             $_SESSION["user"]["username"] = $user["username"];
         } else {
-            #flash("User doesn't exist", "danger");
+            echo "User doesn't exist";
         }
     } catch (Exception $e) {
-        #flash("An unexpected error occurred, please try again", "danger");
-        //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+        echo "An unexpected error occurred, please try again";
+        echo "<pre>" . var_export($e, true) . "</pre>";
     }
 
 
@@ -55,16 +56,17 @@ if (isset($_POST["save"])) {
                             ":password" => password_hash($new_password, PASSWORD_BCRYPT)
                         ]);
 
-                        #flash("Password reset", "success");
+                        echo "Password reset";
                     } else {
-                        #flash("Current password is invalid", "warning");
+                        echo "Current password is invalid";
                     }
                 }
             } catch (Exception $e) {
-                
+                echo "An unexpected error occurred, please try again";
+                echo "<pre>" . var_export($e, true) . "</pre>";
             }
         } else {
-            #flash("New passwords don't match", "warning");
+            echo "New passwords don't match";
         }
     }
 }
@@ -84,7 +86,6 @@ $username = get_username();
         <input type="text" name="username" id="username" value="<?php se($username); ?>" />
     </div>
     <!-- DO NOT PRELOAD PASSWORD -->
-    <div>Password Reset</div>
     <div class="mb-3">
         <label for="cp">Current Password</label>
         <input type="password" name="currentPassword" id="cp" />

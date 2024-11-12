@@ -1,0 +1,41 @@
+body {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background-color: rgb(235, 187, 105);
+  display: block;
+  justify-content: center;  
+}
+
+.navbar ul {
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+}
+
+ul li {
+  width: 80px;
+  height: 40px;
+  margin-right: 10px;
+  line-height: 40px;
+  background-color:rgb(245, 224, 155);
+  text-align: center;
+}
+
+ul li a {
+  text-decoration: none;
+}
+
+form {
+  max-width: 300px;
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100%;
+}
+
+label {
+  width: 80px;
+}
