@@ -1,6 +1,6 @@
 <?php
 //note we need to go up 1 more directory
-require(__DIR__ . "./partials/nav.php");
+require(__DIR__ . "/partials/nav.php");
 
 if (!has_role("Admin")) {
     echo "You dont have permission to view this page";

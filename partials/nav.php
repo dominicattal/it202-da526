@@ -4,7 +4,7 @@ $domain = $_SERVER["HTTP_HOST"];
 if (strpos($domain, ":")) {
     $domain = explode(":", $domain)[0];
 }
-$localWorks = false; //some people have issues with localhost for the cookie params
+$localWorks = true; //some people have issues with localhost for the cookie params
 //if you're one of those people make this false
 
 //this is an extra condition added to "resolve" the localhost issue for the session cookie
@@ -22,7 +22,7 @@ if (($localWorks && $domain == "localhost") || $domain != "localhost") {
 
 session_start();
 require_once(__DIR__ . "/../lib/functions.php");
-require_once(__DIR__ . "./../lib/head.html");
+require_once(__DIR__ . "/../lib/head.html");
 ?>
 <nav class="navbar">
     <ul>
@@ -35,7 +35,9 @@ require_once(__DIR__ . "./../lib/head.html");
             <li><a href="register.php">Register</a></li>
         <?php endif; ?>
         <?php if (has_role("Admin")) : ?>
-            <li><a href="list_roles.php">List Roles</a></li>
+            <li><a href="list_roles.php">List</a></li>
+            <li><a href="create_role.php">Create</a></li>
+            <li><a href="assign_roles.php">Assign</a></li>
         <?php endif; ?>
         <?php if (is_logged_in()) : ?>
             <li><a href="logout.php">Logout</a></li>
